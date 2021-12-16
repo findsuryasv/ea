@@ -18,13 +18,13 @@ const App = () => {
         <View style={{ flex: 1 }}>
             <SafeAreaProvider>
                 <NavigationContainer>
-                    <Stack.Navigator initialRouteName="Home" screenOptions={{
+                    <Stack.Navigator initialRouteName="Home" screenOptions={({ navigation }) => ({
                         headerRight: () => (
                             <View style={{ position: 'relative', marginRight: 12 }}>
-                                <IconButton icon="cart" size={20} onPress={() => console.log('Pressed')} />
+                                <IconButton icon="cart" size={20} onPress={() => navigation.navigate('Cart')} />
                                 <Badge style={{ position: 'absolute', right: 0, zIndex: 12 }}>{getCartCount}</Badge>
                             </View>)
-                    }}>
+                    })}>
                         <Stack.Screen name="Login" component={LoginScreen} />
                         <Stack.Screen name="Home" component={HomeScreen} />
                         <Stack.Screen name="Cart" component={CartScreen} />
