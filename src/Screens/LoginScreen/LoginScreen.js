@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native'
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import axiosInstance from '../../Services/index';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = (props) => {
 
@@ -18,9 +20,17 @@ const LoginScreen = (props) => {
         })
     }
 
-    const authenticate = () => {
+    const authenticate = async () => {
         if (loginData.email && loginData.password) {
-            props.navigation.navigate('Home');
+            try {
+                const res = await axiosInstance.post('/authenticate', {email: loginData.email, password: loginData.password});
+                console.log(res);
+                await AsyncStorage.setItem('token', res?.data?.token);
+                props.navigation.navigate('Home');
+            } catch (error) {
+                console.log(error)
+            }
+
         } else {
             setLoginData({
                 ...loginData,

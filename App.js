@@ -18,7 +18,7 @@ const App = () => {
         <View style={{ flex: 1 }}>
             <SafeAreaProvider>
                 <NavigationContainer>
-                    <Stack.Navigator initialRouteName="Home" screenOptions={({ navigation }) => ({
+                    <Stack.Navigator initialRouteName="Login" screenOptions={({ navigation }) => ({
                         headerRight: () => (
                             <View style={{ position: 'relative', marginRight: 12 }}>
                                 <IconButton icon="cart" size={20} onPress={() => navigation.navigate('Cart')} />
