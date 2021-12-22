@@ -3,7 +3,7 @@ import { Image, Text, View, FlatList } from 'react-native'
 import { Card, Button, Title } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 import { Products } from '../../mock/Products';
-import { addItemToCart, removeItemFromCart } from '../../Store/Actions';
+import { addItemToCart, removeItemFromCart, updateItemQuantityInCart } from '../../Store/Actions';
 
 const HomeScreen = () => {
     const [data, setData] = useState(Products);
@@ -27,13 +27,31 @@ const HomeScreen = () => {
                     <Title>${item.price}</Title>
                 </Card.Content>
                 <Card.Actions style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                    <Button onPress={() => {
-                        if (item.isAddedToCart) {
-                            dispatch(removeItemFromCart(item))
-                        } else {
-                            dispatch(addItemToCart(item));
-                        }
-                    }}>{!item.isAddedToCart ? 'Add to Cart' : 'Added'}</Button>
+                    {
+                        item?.quantity > 1 ? (
+                            <View style={{ display: 'flex', flexDirection: 'row' }}>
+                                <Button onClick={() =>
+                                    dispatch(updateItemQuantityInCart({ ...item, quantity: item.quantity + 1 }))}>+</Button>
+                                <Text>{item?.quantity}</Text>
+                                <Button onClick={() => {
+                                    if (item.quantity === 1) {
+                                        dispatch(removeItemFromCart(item))
+                                    } else {
+                                        dispatch(updateItemQuantityInCart({ ...item, quantity: item.quantity - 1 }))
+                                    }
+                                }
+                                } >-</Button>
+                            </View>
+                        ) : (
+                            <Button onPress={() => {
+                                if (item.isAddedToCart) {
+                                    dispatch(removeItemFromCart(item))
+                                } else {
+                                    dispatch(addItemToCart(item));
+                                }
+                            }}>{'Add to Cart'}</Button>
+                        )
+                    }
                 </Card.Actions>
             </Card>
         )
