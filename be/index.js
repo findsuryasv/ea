@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const userModel = require('./models/user');
 const orderModel = require('./models/order');
+const itemModel = require('./models/item')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -46,10 +47,10 @@ app.post('/create', async (req, res) => {
         if (!hasUser) {
             console.log(hasUser);
             const user = await userModel.create({ email: req.body.email, password: bcrypt.hashSync(req.body.password, 10) });
-            res.status(200).json({ token: jwt.sign(user._id, 'ideyalabs') });
+            res.status(200).json({ token: jwt.sign({id:user._id}, 'ideyalabs') });
             return;
         } else {
-            res.sendStatus(409);
+            res.status(409).json('Email Address already exists');
             return;
         }
     } catch (error) {
@@ -60,12 +61,34 @@ app.post('/create', async (req, res) => {
 
 app.post('/create-order', async (req, res) => {
     try {
-        const res = await orderModel.create(req.body);
+        const res = await orderModel.create({...req.body, userId: jwt.decode(req.headers['Authorization']).id});
         res.sendStatus(200);
     } catch (error) {
         res.status(500).json(error)
     }
 });
+
+
+app.post('/create-items', async (req, res) => {
+    try {
+        const item = await itemModel.create(req.body);
+        res.status(200).json('done');
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+});
+
+app.get('/items', async (req, res) => {
+    try {
+        const items = await itemModel.find();
+        res.status(200).json(items);
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+});
+
 
 app.get('/orders/:id', async (req, res) => {
     try {

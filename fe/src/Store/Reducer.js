@@ -7,7 +7,7 @@ export default function reducer(state = initialState, action) {
         case 'Add Item To Cart':
             return {
                 ...state,
-                cart: [...state.cart, action.payload]
+                cart: [...state.cart, { ...action.payload, quantity: 1 }]
             }
             break;
         case 'Remove Item To Cart':
@@ -15,8 +15,8 @@ export default function reducer(state = initialState, action) {
             break;
         case 'Update Item In Cart':
             return {
-                ...state, cart: state.cart.map(item => item.name === action.payload.name ? 
-                    action.payload : 
+                ...state, cart: state.cart.map(item => item.name === action.payload.name ?
+                    action.payload :
                     item)
             }
             break;

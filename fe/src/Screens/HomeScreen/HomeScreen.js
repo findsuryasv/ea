@@ -2,17 +2,37 @@ import React, { useEffect, useState } from 'react'
 import { Image, Text, View, FlatList } from 'react-native'
 import { Card, Button, Title } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
-import { Products } from '../../mock/Products';
+import axiosInstance from '../../Services';
 import { addItemToCart, removeItemFromCart, updateItemQuantityInCart } from '../../Store/Actions';
 
 const HomeScreen = () => {
-    const [data, setData] = useState(Products);
+
+    const [data, setData] = useState([]);
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state?.cart || []);
 
     useEffect(() => {
-        setData(data.map((product) => ({ ...product, isAddedToCart: cartItems.some((q) => q.name === product.name) })));
-    }, [cartItems])
+        setData(data.map((product) => {
+            const hasItem = cartItems.find(q => q.name === product.name);
+            if (hasItem) {
+                return hasItem;
+            }
+            return {...product, quantity: 0};
+        }))
+    }, [cartItems]);
+
+    useEffect(() => {
+        getItems();
+    },[]);
+
+    const getItems = async () => {
+        try {
+            const res = await axiosInstance.get('/items');
+            setData(res?.data || []);
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
     const renderProduct = ({ item }) => {
@@ -28,12 +48,12 @@ const HomeScreen = () => {
                 </Card.Content>
                 <Card.Actions style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                     {
-                        item?.quantity > 1 ? (
-                            <View style={{ display: 'flex', flexDirection: 'row' }}>
-                                <Button onClick={() =>
+                        item?.quantity > 0 ? (
+                            <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                <Button mode='contained' onPress={() =>
                                     dispatch(updateItemQuantityInCart({ ...item, quantity: item.quantity + 1 }))}>+</Button>
-                                <Text>{item?.quantity}</Text>
-                                <Button onClick={() => {
+                                <Text style={{marginHorizontal: 12}}>{item?.quantity}</Text>
+                                <Button mode='contained' onPress={() => {
                                     if (item.quantity === 1) {
                                         dispatch(removeItemFromCart(item))
                                     } else {
@@ -61,7 +81,7 @@ const HomeScreen = () => {
             <FlatList
                 data={data}
                 renderItem={renderProduct}
-                keyExtractor={item => item.name}
+                keyExtractor={item => item._id}
             />
         </View>
     )

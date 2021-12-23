@@ -14,6 +14,7 @@ const CartScreen = ({navigation}) => {
         if(!cartItems.length) {
             navigation.navigate('Home')
         }
+        console.log(cartItems);
     },[cartItems])
 
     const deleteItemFromCart = (item) => {
