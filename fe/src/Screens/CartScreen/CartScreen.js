@@ -11,9 +11,9 @@ const CartScreen = ({navigation}) => {
     const dispatch = useDispatch();
     
     useEffect(() => {
-        if(!cartItems.length) {
-            navigation.navigate('Home')
-        }
+        // if(!cartItems.length) {
+        //     navigation.navigate('Home')
+        // }
         console.log(cartItems);
     },[cartItems])
 

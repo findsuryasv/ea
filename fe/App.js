@@ -18,10 +18,10 @@ const App = () => {
         <View style={{ flex: 1 }}>
             <SafeAreaProvider>
                 <NavigationContainer>
-                    <Stack.Navigator initialRouteName="Login" screenOptions={({ navigation }) => ({
+                    <Stack.Navigator initialRouteName="Home" screenOptions={(props) => ({
                         headerRight: () => (
                             <View style={{ position: 'relative', marginRight: 12 }}>
-                                <IconButton icon="cart" size={20} onPress={() => navigation.navigate('Cart')} />
+                                <IconButton icon="cart" size={20} onPress={() => props.navigation.navigate('Cart')} />
                                 <Badge style={{ position: 'absolute', right: 0, zIndex: 12 }}>{getCartCount}</Badge>
                             </View>)
                     })}>
