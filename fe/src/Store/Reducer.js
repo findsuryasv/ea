@@ -1,5 +1,6 @@
 const initialState = {
-    cart: []
+    cart: [],
+    showDrawer: false
 }
 
 export default function reducer(state = initialState, action) {
@@ -18,6 +19,12 @@ export default function reducer(state = initialState, action) {
                 ...state, cart: state.cart.map(item => item.name === action.payload.name ?
                     action.payload :
                     item)
+            }
+            break;
+        case 'Display Drawer':
+            return {
+                ...state,
+                showDrawer: action.payload
             }
             break;
         default:

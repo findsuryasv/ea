@@ -94,7 +94,7 @@ const HomeScreen = ({navigation}) => {
     return (
         <View>
             <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', marginVertical: 12, padding: 12 }}>
-                <View style={{ position: 'relative', zIndex: 999 }}>
+                <View style={{ position: 'relative', zIndex: 1 }}>
                     <TouchableOpacity onPress={() => setToShowDropdown(!showDropdown)} style={{ backgroundColor: '#fff', borderWidth: 1, borderColor: '#ddd', borderStyle: 'solid', padding: 12 }}>
                         <Text style={{ color: '#000', fontWeight: 'bold' }}>NavBar Actions</Text>
                     </TouchableOpacity>

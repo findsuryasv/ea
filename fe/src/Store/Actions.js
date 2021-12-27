@@ -12,3 +12,8 @@ export const updateItemQuantityInCart = payload => ({
     type: 'Update Item In Cart',
     payload
 });
+
+export const displayDrawer = payload => ({
+    type: 'Display Drawer',
+    payload
+});
