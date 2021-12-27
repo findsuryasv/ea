@@ -99,6 +99,21 @@ app.get('/orders/:id', async (req, res) => {
     }
 });
 
+app.get('/sidebar-actions', async (req, res) => {
+    try {
+        res.status(200).json([
+            {
+                label: 'Home',
+            },
+            {
+                label: 'Cart',
+            }
+        ]);
+    } catch (error) {
+        res.status(500).json(error)
+    }
+});
+
 
 app.listen(80, () => {
     console.log('Connected on a port 80')
